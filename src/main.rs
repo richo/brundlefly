@@ -5,7 +5,6 @@
 //
 
 #![no_std]
-#![no_main]
 #![feature(globs)]
 
 extern crate core;
@@ -24,6 +23,7 @@ pub mod efi;
 //
 
 #[no_split_stack]
+#[allow(non_snake_case)]
 pub fn EfiMain(imageHandle: EfiHandle, systemTable: *mut EfiSystemTable) -> EfiStatus {
     let loader = Loader { imageHandle: imageHandle, systemTable: systemTable };
     loader.main()
@@ -33,6 +33,7 @@ pub fn EfiMain(imageHandle: EfiHandle, systemTable: *mut EfiSystemTable) -> EfiS
 // Loader class
 //
 
+#[allow(non_snake_case)]
 struct Loader {
     pub imageHandle:    EfiHandle,
     pub systemTable:    *mut EfiSystemTable

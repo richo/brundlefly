@@ -53,6 +53,7 @@ pub enum EfiStatus {
 // Main EFI tables
 //
 
+#[allow(non_snake_case)]
 pub struct EfiTableHeader {
     pub Signature:                          u64,
     pub Revision:                           u32,
@@ -62,6 +63,7 @@ pub struct EfiTableHeader {
 }
 
 // All the *mut u64's are pointers to stuff I don't really need atm and cbf defining structs for
+#[allow(non_snake_case)]
 pub struct EfiSystemTable {
     pub Hdr:                                EfiTableHeader,
     pub FirmwareVendor:                     *mut u16,
@@ -82,6 +84,7 @@ pub struct EfiSystemTable {
 }
 
 // Runtime Services table
+#[allow(non_snake_case)]
 pub struct EfiRuntimeServicesTable {
     pub Hdr:                                EfiTableHeader,
     pub GetTime:                            EfiPlaceholderFunction,
@@ -101,6 +104,7 @@ pub struct EfiRuntimeServicesTable {
 }
 
 // Boot Services table
+#[allow(non_snake_case)]
 pub struct EfiBootServicesTable {
     pub Hdr:                                EfiTableHeader,
     pub RaiseTPL:                           (extern "win64" fn(newTpl: u64) -> u64),
@@ -162,6 +166,7 @@ pub struct EfiConfigurationTable;
 // Some useful protocols and data types
 //
 
+#[allow(non_snake_case)]
 pub struct EfiGuid {
     pub Data1:                              u32,
     pub Data2:                              u16,
@@ -169,6 +174,7 @@ pub struct EfiGuid {
     pub Data4:                              u64
 }
 
+#[allow(non_snake_case)]
 pub struct EfiSimpleTextOutputProtocol {
     pub Reset:                              (extern "win64" fn(this: *mut EfiSimpleTextOutputProtocol,
                                                                extendedVerification: bool) -> u64),
@@ -190,6 +196,7 @@ pub struct EfiSimpleTextOutputProtocol {
     pub Mode:                               *mut SimpleTextOutputMode
 }
 
+#[allow(non_snake_case)]
 pub struct SimpleTextOutputMode {
     pub MaxMode:                            i32,
     pub Mode:                               i32,
@@ -211,6 +218,7 @@ pub static mut BS: *mut EfiBootServicesTable    = 0 as *mut EfiBootServicesTable
 
 #[no_mangle]
 #[no_split_stack]
+#[allow(non_snake_case)]
 pub extern "win64" fn _ModuleEntryPoint(imageHandle: EfiHandle, systemTable: *mut EfiSystemTable) -> EfiStatus {
     unsafe {
         ST = systemTable;
@@ -252,11 +260,11 @@ pub fn print(string: &str) {
 pub fn print_utf16(string: *mut u16) {
     unsafe {
         // get the Simple Text Output Protool instance on the console output handle, get the OutputString() function
-        let conOut = (*::efi::ST).ConOut;
-        let outputString = (*conOut).OutputString;
+        let con_out = (*::efi::ST).ConOut;
+        let output_string = (*con_out).OutputString;
 
         // print the string
-        outputString(conOut, string);
+        output_string(con_out, string);
     }
 }
 
@@ -277,9 +285,7 @@ pub fn malloc(size: uint) -> *mut u8 {
 // #[inline]
 // #[lang="exchange_free"]
 pub unsafe fn free(ptr: *mut u8) {
-    unsafe {
-        ((*::efi::BS).FreePool)(ptr as *mut u64);
-    }
+    ((*::efi::BS).FreePool)(ptr as *mut u64);
 }
 
 
