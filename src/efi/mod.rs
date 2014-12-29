@@ -3,9 +3,8 @@
 //
 
 extern crate core;
-use core::option::{None, Some};
 use core::iter::Iterator;
-use core::str::StrSlice;
+use core::str::StrExt;
 use core::intrinsics::transmute;
 use core::intrinsics::offset;
 

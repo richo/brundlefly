@@ -9,8 +9,6 @@
 
 extern crate core;
 use core::iter::Iterator;
-use core::str::StrSlice;
-use core::fmt::String;
 use core::intrinsics::transmute;
 
 use efi::*;
@@ -41,7 +39,7 @@ struct Loader {
 
 impl Loader {
     fn main(&self) -> EfiStatus {
-        let status: EfiStatus = EFI_SUCCESS;
+        let status: EfiStatus = EfiStatus::EFI_SUCCESS;
 
         efi::print("rustybutts\n");
 
